@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Lust</string>
+
+    <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">pk.eyJ1Ijoiam1vcmFsZXMyNiIsImEiOiJjbTZmZGt2MjMwM3d2MmxweGtwcWRvYmdoIn0.sfV0-BT46Y8A88kDeW3mqg</string>
+</resources>

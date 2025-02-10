@@ -1,0 +1,18 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "name": "Mexipuerto Ciudad Azteca",
+      "category": 1,
+      "latitude": 19.534437247993388,
+      "longitude": -99.02688259180901
+    },
+    {
+      "id": 2,
+      "name": "Multiplaza Aragón",
+      "category": 2,
+      "latitude": 19.530150028517237,
+      "longitude": -99.02651783640417
+    }
+  ]
+}
