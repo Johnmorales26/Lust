@@ -1,18 +1,27 @@
 package com.lust.app.presentation.mapModule
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,11 +32,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lust.app.R
 import com.lust.app.data.entities.LocationData
+import com.lust.app.data.entities.PlaceType
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.extension.compose.MapboxMap
@@ -98,6 +110,8 @@ fun MapContent(
     showLocationData: Pair<Boolean, LocationData?>,
     vm: MapViewModel
 ) {
+    val context = LocalContext.current
+
     Box(modifier = modifier.fillMaxSize()) {
         MapboxMap(
             modifier = Modifier
@@ -113,7 +127,7 @@ fun MapContent(
             mapViewportState = mapViewportState
         ) {
             locations.forEach { location ->
-                val markerResourceId = remember { location.category.getIcon() }
+                val markerResourceId = remember { location.category.image }
                 val marker = rememberIconImage(
                     key = markerResourceId,
                     painter = painterResource(markerResourceId)
@@ -123,40 +137,105 @@ fun MapContent(
                     onClick = {
                         vm.launchIntent(MapIntent.ShowInfoLocation(location.id))
                         true
-                    }) {
+                    }
+                ) {
                     iconImage = marker
+                    iconColor = location.category.color
+                    iconSize = 1.5
                 }
             }
         }
 
-        FloatingActionButton(
+        LazyRow(
             modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(end = 8.dp, bottom = 8.dp),
-            onClick = { vm.launchIntent(MapIntent.GetCurrentLocation) }) {
-            Icon(
-                painter = painterResource(R.drawable.ic_my_location),
-                contentDescription = null
-            )
+                .fillMaxWidth()
+                .align(Alignment.TopStart),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            itemsIndexed(PlaceType.entries) { _, item ->
+                ElevatedAssistChip(
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(item.image),
+                            contentDescription = null
+                        )
+                    },
+                    onClick = { vm.launchIntent(MapIntent.FilterPlaces(item.id)) },
+                    label = { Text(stringResource(item.title)) },
+                    colors = AssistChipDefaults.elevatedAssistChipColors(
+                        leadingIconContentColor = item.color
+                    ),
+                )
+            }
         }
 
-        AnimatedVisibility(
-            showLocationData.first && showLocationData.second != null,
-            modifier = Modifier.align(Alignment.BottomCenter)
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            showLocationData.second?.let {
-                ElevatedCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(it.name)
-                        Button(onClick = { vm.launchIntent(MapIntent.HideLocationData) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_hide),
-                                contentDescription = null
-                            )
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(end = 8.dp, bottom = 8.dp),
+                onClick = { vm.launchIntent(MapIntent.GetCurrentLocation) }) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_my_location),
+                    contentDescription = null
+                )
+            }
+            AnimatedVisibility(
+                showLocationData.first && showLocationData.second != null
+            ) {
+                showLocationData.second?.let {
+                    ElevatedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp, start = 8.dp, end = 8.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .wrapContentHeight()
+                                    .weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(it.name, style = MaterialTheme.typography.titleLarge)
+                                Text(it.description, style = MaterialTheme.typography.bodyMedium)
+                                Text(it.distanceInKm, style = MaterialTheme.typography.labelMedium)
+                            }
+                            Column(
+                                modifier = Modifier.wrapContentHeight(),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Button(onClick = { vm.launchIntent(MapIntent.HideLocationData) }) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_hide),
+                                        contentDescription = null
+                                    )
+                                }
+                                Button(onClick = {
+                                    val route =
+                                        "geo:0,0?q=${it.latitude},${it.longitude}(${it.name})"
+                                    val gmmIntentUri = Uri.parse(route)
+                                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                                    mapIntent.setPackage("com.google.android.apps.maps")
+                                    context.startActivity(mapIntent)
+                                }) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_navigate),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
                         }
                     }
                 }

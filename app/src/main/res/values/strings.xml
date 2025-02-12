@@ -2,4 +2,18 @@
     <string name="app_name">Lust</string>
 
     <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">pk.eyJ1Ijoiam1vcmFsZXMyNiIsImEiOiJjbTZmZGt2MjMwM3d2MmxweGtwcWRvYmdoIn0.sfV0-BT46Y8A88kDeW3mqg</string>
+    <string name="place_type_all">All</string>
+    <string name="place_type_park">Park</string>
+    <string name="place_type_public_bathrooms">Public Bathrooms</string>
+    <string name="place_type_steam_room">Steam Room</string>
+    <string name="place_type_hotel">Hotel</string>
+    <string name="place_type_club">Club</string>
+    <string name="place_type_sex_shop">Sex Shop</string>
+    <string name="place_type_nudist_beach">Nudist Beach</string>
+    <string name="place_type_bar">Bar</string>
+    <string name="place_type_beach">Beach</string>
+    <string name="place_type_gym">Gym</string>
+    <string name="place_type_cyber_cafe">Cyber Cafe</string>
+    <string name="place_type_cinema">Cinema</string>
+    <string name="place_type_temporary">Temporary</string>
 </resources>

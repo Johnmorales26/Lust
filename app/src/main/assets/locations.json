@@ -2,17 +2,79 @@
   "locations": [
     {
       "id": 1,
-      "name": "Mexipuerto Ciudad Azteca",
-      "category": 1,
-      "latitude": 19.534437247993388,
-      "longitude": -99.02688259180901
+      "name": "Energy Multiplaza Aragón",
+      "category": 10,
+      "latitude": 19.531570368740528,
+      "longitude": -99.02638061626457,
+      "photo_from_outside": null,
+      "photo_from_inside": null,
+      "qualification": 0.0,
+      "description": "Centro de transporte multimodal con conexiones al Metro, Mexibús y rutas de transporte público.",
+      "comments": [
+        {
+          "id": 123445,
+          "name": "Roman",
+          "comment": "Falta mucho mantenimiento a los baños."
+        },
+        {
+          "id": 123446,
+          "name": "Ana",
+          "comment": "El lugar está bien conectado con el transporte público, pero siempre hay mucha gente."
+        },
+        {
+          "id": 123447,
+          "name": "Carlos",
+          "comment": "El acceso al Mexibús es excelente, pero la limpieza en general podría mejorar."
+        },
+        {
+          "id": 123448,
+          "name": "Elena",
+          "comment": "El centro tiene buena infraestructura, pero los baños necesitan atención urgente."
+        },
+        {
+          "id": 123449,
+          "name": "David",
+          "comment": "El lugar es bastante conveniente para viajes interurbanos, pero podría tener más servicios."
+        }
+      ]
     },
     {
       "id": 2,
-      "name": "Multiplaza Aragón",
-      "category": 2,
-      "latitude": 19.530150028517237,
-      "longitude": -99.02651783640417
+      "name": "Sportica Azteca",
+      "category": 10,
+      "latitude": 19.53709728235798,
+      "longitude": -99.02720992484157,
+      "photo_from_outside": null,
+      "photo_from_inside": null,
+      "qualification": 0.0,
+      "description": "Centro comercial con tiendas, restaurantes, cines y supermercado, ubicado en Ecatepec.",
+      "comments": [
+        {
+          "id": 223445,
+          "name": "Laura",
+          "comment": "Un centro comercial muy completo, tiene de todo, desde tiendas hasta opciones para comer."
+        },
+        {
+          "id": 223446,
+          "name": "Sergio",
+          "comment": "El cine es moderno y la calidad de las salas es excelente."
+        },
+        {
+          "id": 223447,
+          "name": "Margarita",
+          "comment": "Me gusta mucho el supermercado, tienen buenos precios y promociones."
+        },
+        {
+          "id": 223448,
+          "name": "José",
+          "comment": "A veces la zona está muy congestionada, pero la variedad de tiendas lo compensa."
+        },
+        {
+          "id": 223449,
+          "name": "Verónica",
+          "comment": "Excelente lugar para pasar la tarde, aunque los precios en algunos restaurantes son altos."
+        }
+      ]
     }
   ]
 }
