@@ -45,7 +45,7 @@ class MapViewModel(
         viewModelScope.launch { channel.send(intent) }
     }
 
-    private fun showInfoLocation(id: Int) {
+    private fun showInfoLocation(id: String) {
         try {
             repository.showInfoLocation(id = id) { location ->
                 if (location != null) {
@@ -61,7 +61,7 @@ class MapViewModel(
 
     private fun getLocations() {
         try {
-            _state.value = repository.getLocations()
+            repository.getLocations { _state.value = it }
         } catch (e: Exception) {
             _state.value = MapState.Error(msg = "")
         }

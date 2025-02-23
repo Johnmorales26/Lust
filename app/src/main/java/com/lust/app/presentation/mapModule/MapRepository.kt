@@ -5,16 +5,20 @@ import android.content.Context
 import android.location.Location
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.firebase.firestore.FirebaseFirestore
+import com.lust.app.data.database.Database
 import com.lust.app.data.entities.LocationData
 import com.lust.app.data.entities.Locations
 import com.lust.app.data.utils.JsonMapper
 
 class MapRepository(
     private val context: Context,
+    private val db: Database,
     private val jsonMapper: JsonMapper,
     private val fusedLocationClient: FusedLocationProviderClient
 ) {
 
+    private val TAG = MapRepository::class.simpleName
     private lateinit var locations: Locations
 
     @SuppressLint("MissingPermission")
@@ -39,15 +43,15 @@ class MapRepository(
             }
     }
 
-    fun getLocations(): MapState {
-        val json = context.assets.open("locations.json").bufferedReader().use { it.readText() }
-        locations =
-            jsonMapper.mapJsonToDataClass(jsonString = json, dataClass = Locations::class.java)
-        return MapState.SuccessFetchLocations(locations = locations)
+    fun getLocations(onResponse: (MapState) -> Unit) {
+        db.fetchLocations {
+            locations = it
+            onResponse(MapState.SuccessFetchLocations(locations = it))
+        }
     }
 
-    fun showInfoLocation(id: Int, onResponse: (LocationData?) -> Unit) {
-        val location = locations.locations.find { it.id == id }
+    fun showInfoLocation(id: String, onResponse: (LocationData?) -> Unit) {
+        val location = locations.locations.find { it.uid == id }
 
         if (location == null) {
             onResponse(null)

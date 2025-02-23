@@ -2,9 +2,12 @@ package com.lust.app.presentation.mapModule
 
 import android.content.Intent
 import android.net.Uri
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -47,6 +51,8 @@ import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import com.mapbox.maps.extension.compose.annotation.rememberIconImage
 import com.mapbox.maps.extension.compose.style.MapStyle
+import com.mapbox.maps.plugin.gestures.OnMapLongClickListener
+import com.mapbox.maps.plugin.gestures.OnRotateListener
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -115,10 +121,7 @@ fun MapContent(
     Box(modifier = modifier.fillMaxSize()) {
         MapboxMap(
             modifier = Modifier
-                .fillMaxSize()
-                .clickable {
-                    vm.launchIntent(MapIntent.HideLocationData)
-                },
+                .fillMaxSize(),
             compass = {},
             scaleBar = {},
             logo = {},
@@ -135,7 +138,9 @@ fun MapContent(
                 PointAnnotation(
                     point = Point.fromLngLat(location.longitude, location.latitude),
                     onClick = {
-                        vm.launchIntent(MapIntent.ShowInfoLocation(location.id))
+                        location.uid?.let {
+                            vm.launchIntent(MapIntent.ShowInfoLocation(it))
+                        }
                         true
                     }
                 ) {
@@ -219,6 +224,12 @@ fun MapContent(
                                 Button(onClick = { vm.launchIntent(MapIntent.HideLocationData) }) {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_hide),
+                                        contentDescription = null
+                                    )
+                                }
+                                Button(onClick = { }) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_comments),
                                         contentDescription = null
                                     )
                                 }
