@@ -16,4 +16,8 @@
     <string name="place_type_cyber_cafe">Cyber Cafe</string>
     <string name="place_type_cinema">Cinema</string>
     <string name="place_type_temporary">Temporary</string>
+    <string name="btn_send">Enviar</string>
+    <string name="label_name_place">Nombre del lugar</string>
+    <string name="label_description_place">Descripcion del lugar</string>
+    <string name="title_add_place">Agregar un lugar</string>
 </resources>

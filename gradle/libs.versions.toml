@@ -7,13 +7,15 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.0"
-composeBom = "2025.01.01"
-mapbox = "11.9.1"
+composeBom = "2025.02.00"
+mapbox = "11.10.0"
 koin = "4.0.0"
 location = "21.3.0"
 gson = "2.11.0"
 services = "4.4.2"
 firebase = "33.9.0"
+ads = "23.6.0"
+navigation = "2.8.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,6 +41,10 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+
+play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "ads" }
+
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

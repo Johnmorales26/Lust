@@ -1,9 +1,15 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
 }
+
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
 
 android {
     namespace = "com.lust.app"
@@ -17,6 +23,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "AD_UNIT_ID_BANNER_DEBUG","\"${localProperties["AD_UNIT_ID_BANNER_DEBUG"]}\"")
+        buildConfigField("String", "AD_UNIT_ID_BANNER_RELEASE","\"${localProperties["AD_UNIT_ID_BANNER_RELEASE"]}\"")
+        buildConfigField("String", "AD_UNIT_ID_INTERSTITIAL_DEBUG","\"${localProperties["AD_UNIT_ID_INTERSTITIAL_DEBUG"]}\"")
+        buildConfigField("String", "AD_UNIT_ID_INTERSTITIAL_RELEASE","\"${localProperties["AD_UNIT_ID_INTERSTITIAL_RELEASE"]}\"")
     }
 
     buildTypes {
@@ -37,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -59,6 +71,10 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
+
+    implementation(libs.play.services.ads)
+
+    implementation(libs.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
