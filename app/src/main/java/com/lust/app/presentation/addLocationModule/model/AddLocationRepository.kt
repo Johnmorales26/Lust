@@ -1,4 +1,4 @@
-package com.lust.app.presentation.addLocationModule
+package com.lust.app.presentation.addLocationModule.model
 
 import com.lust.app.data.database.Database
 import com.lust.app.data.entities.LocationData

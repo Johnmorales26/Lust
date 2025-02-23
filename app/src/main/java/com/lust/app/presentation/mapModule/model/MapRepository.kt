@@ -1,11 +1,10 @@
-package com.lust.app.presentation.mapModule
+package com.lust.app.presentation.mapModule.model
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.firebase.firestore.FirebaseFirestore
 import com.lust.app.data.database.Database
 import com.lust.app.data.entities.LocationData
 import com.lust.app.data.entities.Locations
@@ -44,9 +43,14 @@ class MapRepository(
     }
 
     fun getLocations(onResponse: (MapState) -> Unit) {
-        db.fetchLocations {
-            locations = it
-            onResponse(MapState.SuccessFetchLocations(locations = it))
+        if (::locations.isInitialized && locations.locations.isNotEmpty()) {
+            onResponse(MapState.SuccessFetchLocations(locations = locations))
+            return
+        }
+
+        db.fetchLocations { fetchedLocations ->
+            locations = fetchedLocations
+            onResponse(MapState.SuccessFetchLocations(locations = fetchedLocations))
         }
     }
 

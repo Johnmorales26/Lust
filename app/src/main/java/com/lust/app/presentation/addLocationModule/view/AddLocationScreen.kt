@@ -1,4 +1,4 @@
-package com.lust.app.presentation.addLocationModule
+package com.lust.app.presentation.addLocationModule.view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -30,11 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lust.app.R
 import com.lust.app.data.entities.PlaceType
+import com.lust.app.presentation.addLocationModule.AddLocationViewModel
 import com.lust.app.presentation.addLocationModule.composable.DescriptionTextField
 import com.lust.app.presentation.addLocationModule.composable.NameTextField
 import com.lust.app.presentation.addLocationModule.composable.PlaceFolder
 import com.lust.app.presentation.addLocationModule.composable.PlaceModalBottomSheet
 import com.lust.app.presentation.addLocationModule.composable.SendButton
+import com.lust.app.presentation.addLocationModule.intent.AddLocationIntent
+import com.lust.app.presentation.addLocationModule.model.AddLocationState
 import com.lust.app.presentation.navigation.LocalNavController
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel

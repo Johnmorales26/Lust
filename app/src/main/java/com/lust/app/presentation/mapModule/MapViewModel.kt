@@ -1,11 +1,10 @@
 package com.lust.app.presentation.mapModule
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lust.app.presentation.mapModule.intent.MapIntent
+import com.lust.app.presentation.mapModule.model.MapRepository
+import com.lust.app.presentation.mapModule.model.MapState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 class MapViewModel(
-    private val context: Context,
     private val repository: MapRepository
 ) : ViewModel() {
 
@@ -47,15 +45,20 @@ class MapViewModel(
 
     private fun showInfoLocation(id: String) {
         try {
+            if (id.isBlank()) {
+                _state.value = MapState.HideLocationData
+                return
+            }
+
             repository.showInfoLocation(id = id) { location ->
                 if (location != null) {
                     _state.value = MapState.ShowInfoLocation(location)
                 } else {
-                    _state.value = MapState.Error(msg = "")
+                    _state.value = MapState.Error(msg = "Location information not found.")
                 }
             }
         } catch (e: Exception) {
-            _state.value = MapState.Error(msg = "")
+            _state.value = MapState.Error(msg = "Failed to show location information: ${e.message}")
         }
     }
 
@@ -63,7 +66,7 @@ class MapViewModel(
         try {
             repository.getLocations { _state.value = it }
         } catch (e: Exception) {
-            _state.value = MapState.Error(msg = "")
+            _state.value = MapState.Error(msg = "Failed to retrieve locations: ${e.message}")
         }
     }
 
@@ -74,12 +77,15 @@ class MapViewModel(
             }
         } catch (e: Exception) {
             _state.value =
-                MapState.Error(msg = "Unable to retrieve your location. Try again later.")
+                MapState.Error(msg = "Unable to retrieve your location. Try again later. Error: ${e.message}")
         }
     }
 
     private fun filterPlaces(id: Int) {
-        _state.value = repository.filterPlaces(id)
+        try {
+            _state.value = repository.filterPlaces(id)
+        } catch (e: Exception) {
+            _state.value = MapState.Error(msg = "Failed to filter places: ${e.message}")
+        }
     }
-
 }

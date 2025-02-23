@@ -1,5 +1,6 @@
 package com.lust.app.presentation.mapModule.composable
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,6 +51,8 @@ fun MapContent(
     onNavigateClick: (LocationData) -> Unit,
     onAddLocationClick: (String, String) -> Unit
 ) {
+    val isDarkModel = isSystemInDarkTheme()
+
     Box(modifier = modifier.fillMaxSize()) {
         MapboxMap(
             modifier = Modifier.fillMaxSize(),
@@ -67,7 +70,7 @@ fun MapContent(
                             true
                         }
                     },
-                    style = Style.STANDARD,
+                    style = if (isDarkModel) Style.DARK else Style.STANDARD,
                 )
             },
             mapViewportState = mapViewportState

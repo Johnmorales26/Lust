@@ -6,8 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.lust.app.data.entities.LocationData
-import com.lust.app.presentation.mapModule.MapIntent
-import com.lust.app.presentation.mapModule.MapState
+import com.lust.app.presentation.mapModule.intent.MapIntent
+import com.lust.app.presentation.mapModule.model.MapState
 import com.lust.app.presentation.mapModule.MapViewModel
 import com.lust.app.presentation.mapModule.composable.MapContent
 import com.lust.app.presentation.navigation.LocalNavController
@@ -26,8 +26,11 @@ fun MapScreen(modifier: Modifier = Modifier, vm: MapViewModel = koinViewModel())
     val (showLocationData, setShowLocationData) = remember { mutableStateOf<LocationData?>(null) }
     val locations = rememberLocations(state)
 
-    LaunchedEffect(Unit) { vm.launchIntent(MapIntent.GetLocations) }
-    LaunchedEffect(state) { handleStateEffects(state, mapViewportState, setShowLocationData, context) }
+    LaunchedEffect(Unit) {
+        vm.launchIntent(MapIntent.GetCurrentLocation)
+        vm.launchIntent(MapIntent.GetLocations)
+    }
+    LaunchedEffect(state) { handleStateEffects(state, mapViewportState, setShowLocationData, context, vm) }
 
     MapContent(
         modifier = modifier,
@@ -69,7 +72,8 @@ private fun handleStateEffects(
     state: MapState,
     mapViewportState: MapViewportState,
     setShowLocationData: (LocationData?) -> Unit,
-    context: android.content.Context
+    context: android.content.Context,
+    vm: MapViewModel
 ) {
     when (state) {
         is MapState.SuccessLocation -> {
@@ -79,8 +83,14 @@ private fun handleStateEffects(
                 center(Point.fromLngLat(lon, lat))
             }
         }
-        is MapState.ShowInfoLocation -> setShowLocationData(state.locationData)
-        is MapState.HideLocationData -> setShowLocationData(null)
+        is MapState.ShowInfoLocation -> {
+            vm.launchIntent(MapIntent.GetLocations)
+            setShowLocationData(state.locationData)
+        }
+        is MapState.HideLocationData -> {
+            vm.launchIntent(MapIntent.GetLocations)
+            setShowLocationData(null)
+        }
         is MapState.Error -> showToast(context, state.msg)
         else -> {}
     }

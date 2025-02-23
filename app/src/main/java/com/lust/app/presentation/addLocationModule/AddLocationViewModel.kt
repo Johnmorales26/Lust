@@ -2,6 +2,9 @@ package com.lust.app.presentation.addLocationModule
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lust.app.presentation.addLocationModule.intent.AddLocationIntent
+import com.lust.app.presentation.addLocationModule.model.AddLocationRepository
+import com.lust.app.presentation.addLocationModule.model.AddLocationState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

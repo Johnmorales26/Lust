@@ -1,4 +1,4 @@
-package com.lust.app.presentation.mapModule
+package com.lust.app.presentation.mapModule.model
 
 import android.location.Location
 import com.lust.app.data.entities.LocationData

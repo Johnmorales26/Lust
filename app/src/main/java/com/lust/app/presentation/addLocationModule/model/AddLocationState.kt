@@ -1,4 +1,4 @@
-package com.lust.app.presentation.addLocationModule
+package com.lust.app.presentation.addLocationModule.model
 
 sealed class AddLocationState {
     data object Init: AddLocationState()

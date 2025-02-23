@@ -1,4 +1,4 @@
-package com.lust.app.presentation.addLocationModule
+package com.lust.app.presentation.addLocationModule.intent
 
 sealed class AddLocationIntent {
     data class RegisterPlace(

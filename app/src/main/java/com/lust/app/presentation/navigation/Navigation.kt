@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.lust.app.presentation.addLocationModule.AddLocationScreen
+import com.lust.app.presentation.addLocationModule.view.AddLocationScreen
 import com.lust.app.presentation.mapModule.view.MapScreen
 
 val LocalNavController =

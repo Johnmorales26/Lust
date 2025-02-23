@@ -1,4 +1,4 @@
-package com.lust.app.presentation.mapModule
+package com.lust.app.presentation.mapModule.intent
 
 sealed class MapIntent {
     data class ShowInfoLocation(val id: String) : MapIntent()
